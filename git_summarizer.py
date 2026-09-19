@@ -35,8 +35,7 @@ load_dotenv()
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 GITHUB_USER = os.environ.get("GITHUB_USER")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
-OLLAMA_URL = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "gemma4:12b"  # change to whatever tag you actually have pulled
+OLLAMA_MODEL = "gemma4:12b"  
 LOOKBACK_HOURS = 24
 MAX_DIFF_CHARS = 12000  # kept for reference; superseded by PER_COMMIT_MAX_CHARS below
 PER_COMMIT_MAX_CHARS = 6000  # truncate any single commit's diff before summarizing it
