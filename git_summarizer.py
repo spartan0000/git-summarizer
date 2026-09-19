@@ -14,7 +14,7 @@ Env vars:
                         summary just prints to stdout)
 
 Usage:
-    python3 github_diff_summary.py
+    python3 git_summarizer.py
 
 Cron example (runs daily at 8am):
     0 8 * * * /usr/bin/python3 /path/to/github_diff_summary.py >> /path/to/logfile.log 2>&1
@@ -24,7 +24,7 @@ import os
 import sys
 import requests
 from datetime import datetime, timedelta, timezone
-
+import ollama
 from ollama import chat
 from dotenv import load_dotenv
 
@@ -190,7 +190,7 @@ def main():
         try:
             
             summary = summarize_diff(label, diff)
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             print(f"[warn: failed to summarize {label}: {e}]", file=sys.stderr)
             summary = "[summary failed - see logs]"
 
@@ -199,7 +199,11 @@ def main():
     # Pass 2: summarize the list of per-commit summaries into one digest.
     combined_summaries = "\n\n".join(per_commit_summaries)
     print(header)
-    final_summary = summarize_with_ollama(combined_summaries)
+    try:
+        final_summary = summarize_with_ollama(combined_summaries)
+    except Exception as e:
+        print(f"[warn: failed to generate final summary: {e}]", file=sys.stderr)
+        final_summary = "[final summary failed - see per-commit summaries above/logs]"
     print(final_summary)
 
     send_to_slack(f"{header}\n{final_summary}")
