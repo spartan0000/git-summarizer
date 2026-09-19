@@ -4,7 +4,8 @@ Pulls commits (with diffs) authored by you across all your GitHub repos
 in the last 24 hours, and summarizes them using a local Ollama model.
 
 Requirements:
-    pip install requests --break-system-packages
+    python -m venv .venv then activate virtual environment
+    pip install requests 
 
 Env vars:
     GITHUB_TOKEN     - a GitHub personal access token (classic or fine-grained,
